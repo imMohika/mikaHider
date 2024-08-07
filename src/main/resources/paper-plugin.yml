@@ -3,3 +3,17 @@ version: '1.0-SNAPSHOT'
 main: ir.mohika.mikaHider.MikaHider
 api-version: '1.20'
 authors: [ imMohika ]
+dependencies:
+  server:
+    PartyAndFriendsGUI:
+      load: BEFORE
+      join-classpath: false
+      required: false
+    FriendsAPIForPartyAndFriends:
+      load: BEFORE
+      join-classpath: true
+      required: false
+    Spigot-Party-API-PAF:
+      load: BEFORE
+      join-classpath: true
+      required: false

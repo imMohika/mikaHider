@@ -2,7 +2,6 @@ package ir.mohika.mikaHider.listeners;
 
 import ir.mohika.mikaHider.MikaHider;
 import ir.mohika.mikaHider.hider.Hider;
-import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -43,7 +43,6 @@ public class Hider {
 
     ItemMeta itemMeta = item.getItemMeta();
     if (!itemMeta.getPersistentDataContainer().has(namespacedKey)) {
-      MikaHider.getInstance().getLogger().info("no namespacekey");
       return null;
     }
 
@@ -61,6 +60,7 @@ public class Hider {
     ItemConfig itemConfig =
         switch (playerState) {
           case VISIBLE -> MikaHider.getInstance().getCfg().getShowingItem();
+          case PAF -> MikaHider.getInstance().getCfg().getHooks().getPartyAndFriends().getPafItem();
           case HIDDEN -> MikaHider.getInstance().getCfg().getHidingItem();
         };
 

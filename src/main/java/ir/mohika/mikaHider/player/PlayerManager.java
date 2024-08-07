@@ -1,19 +1,21 @@
 package ir.mohika.mikaHider.player;
 
 import ir.mohika.mikaHider.MikaHider;
+import ir.mohika.mikaHider.hooks.paf.PAFHook;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerManager {
   private final MikaHider plugin;
   private final Map<String, PlayerState> playerStates = new HashMap<>();
+  private final boolean pafHook;
 
   public PlayerManager(MikaHider plugin) {
     this.plugin = plugin;
+    pafHook = plugin.getCfg().getHooks().getPartyAndFriends().isEnabled();
   }
 
   public void removePlayer(@NotNull Player player) {
@@ -34,6 +36,7 @@ public class PlayerManager {
     playerStates.put(name, nextState);
     switch (nextState) {
       case VISIBLE -> showPlayers(player);
+      case PAF -> pafOnly(player);
       case HIDDEN -> hidePlayers(player);
     }
 
@@ -42,7 +45,8 @@ public class PlayerManager {
 
   private PlayerState nextState(PlayerState current) {
     return switch (current) {
-      case VISIBLE -> PlayerState.HIDDEN;
+      case VISIBLE -> pafHook ? PlayerState.PAF : PlayerState.HIDDEN;
+      case PAF -> PlayerState.HIDDEN;
       case HIDDEN -> PlayerState.VISIBLE;
     };
   }
@@ -52,6 +56,10 @@ public class PlayerManager {
       if (p == player) continue;
       player.showPlayer(plugin, p);
     }
+  }
+
+  private void pafOnly(Player player) {
+    plugin.getPafHook().showPafOnly(player);
   }
 
   private void hidePlayers(Player player) {
@@ -79,5 +87,6 @@ public class PlayerManager {
   public enum PlayerState {
     HIDDEN,
     VISIBLE,
+    PAF
   }
 }

@@ -18,11 +18,17 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        url = "https://simonsator.de/repo/"
+    }
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
     implementation("de.exlll:configlib-yaml:4.5.0")
+
+    compileOnly('de.simonsator:Party-and-Friends-MySQL-Edition-Spigot-API:1.6.2-RELEASE')
+    compileOnly('de.simonsator:spigot-party-api-for-party-and-friends:1.0.7-RELEASE')
 }
 
 tasks {
