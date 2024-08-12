@@ -32,7 +32,7 @@ public class Config {
     @Comment({
       "Hook into Party And Friends",
       "Adds Friends & Party State Feature",
-      "Check: https://www.spigotmc.org/resources/party-and-friends-extended-edition-for-bungeecord-velocity-supports-1-7-1-21-x.10123/"
+      "Check: https://www.spigotmc.org/resources/10123/"
     })
     private PAFHookConfig partyAndFriends = new PAFHookConfig();
   }

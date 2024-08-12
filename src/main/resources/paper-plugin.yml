@@ -7,7 +7,7 @@ dependencies:
   server:
     PartyAndFriendsGUI:
       load: BEFORE
-      join-classpath: false
+      join-classpath: true
       required: false
     FriendsAPIForPartyAndFriends:
       load: BEFORE

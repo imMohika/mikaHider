@@ -9,11 +9,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-public class PAFListeners implements PartyEventListenerInterface {
+public class PAFPartyListeners implements PartyEventListenerInterface {
 
   private final MikaHider plugin;
 
-  public PAFListeners(MikaHider plugin) {
+  public PAFPartyListeners(MikaHider plugin) {
     this.plugin = plugin;
   }
 

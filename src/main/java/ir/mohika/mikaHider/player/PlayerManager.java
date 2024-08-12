@@ -1,7 +1,8 @@
 package ir.mohika.mikaHider.player;
 
+import de.simonsator.partyandfriendsgui.api.PartyFriendsAPI;
 import ir.mohika.mikaHider.MikaHider;
-import ir.mohika.mikaHider.hooks.paf.PAFHook;
+import ir.mohika.mikaHider.hooks.paf.PAFHookConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -12,10 +13,15 @@ public class PlayerManager {
   private final MikaHider plugin;
   private final Map<String, PlayerState> playerStates = new HashMap<>();
   private final boolean pafHook;
+  private final boolean pafHiderHook;
 
   public PlayerManager(MikaHider plugin) {
     this.plugin = plugin;
     pafHook = plugin.getCfg().getHooks().getPartyAndFriends().isEnabled();
+    pafHiderHook =
+        pafHook
+            && plugin.getCfg().getHooks().getPartyAndFriends().getHookType()
+                == PAFHookConfig.HookType.GUI;
   }
 
   public void removePlayer(@NotNull Player player) {
@@ -28,6 +34,9 @@ public class PlayerManager {
     if (currentState == null) {
       this.playerStates.put(name, PlayerState.VISIBLE);
       showPlayers(player);
+      if (pafHiderHook) {
+        plugin.getPafHook().getHandler().showAll(player);
+      }
       return PlayerState.VISIBLE;
     }
 
@@ -52,6 +61,10 @@ public class PlayerManager {
   }
 
   private void showPlayers(Player player) {
+    if (pafHiderHook) {
+      plugin.getPafHook().getHandler().showAll(player);
+      return;
+    }
     for (Player p : Bukkit.getOnlinePlayers()) {
       if (p == player) continue;
       player.showPlayer(plugin, p);
@@ -59,10 +72,14 @@ public class PlayerManager {
   }
 
   private void pafOnly(Player player) {
-    plugin.getPafHook().showPafOnly(player);
+    plugin.getPafHook().getHandler().showPaf(player);
   }
 
   private void hidePlayers(Player player) {
+    if (pafHiderHook) {
+      plugin.getPafHook().getHandler().hideAll(player);
+      return;
+    }
     for (Player p : Bukkit.getOnlinePlayers()) {
       if (p == player) continue;
       player.hidePlayer(plugin, p);
@@ -70,6 +87,9 @@ public class PlayerManager {
   }
 
   public void playerJoined(@NotNull Player joined) {
+    if (pafHiderHook) {
+      return;
+    }
     for (Map.Entry<String, PlayerState> entry : playerStates.entrySet()) {
       Player player = Bukkit.getPlayer(entry.getKey());
       if (player == null) continue;
